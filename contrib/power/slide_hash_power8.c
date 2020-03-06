@@ -15,7 +15,7 @@ local void slide_hash_power8_loop(
 {
     vector unsigned short vw, vm, vc, vs, *vp;
     const vector unsigned short v0 = {0};
-    unsigned chunks, m;
+    unsigned chunks;
 
     /* Each vector register (chunk) corresponds to 128 bits == 8 Posf,
      * so instead of processing each of the n_elems in the hash table
