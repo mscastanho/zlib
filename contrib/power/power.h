@@ -3,6 +3,6 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-#include "zconf.h"
+#include "../../zconf.h"
 
 unsigned long _crc32_z_power8(unsigned long, const Bytef *, z_size_t);
