@@ -13,8 +13,7 @@ local void slide_hash_power8_loop(
     unsigned n_elems,
     Posf *table_end)
 {
-    vector unsigned short vw, vm, vc, vs, *vp;
-    const vector unsigned short v0 = {0};
+    vector unsigned short vw, vm, *vp;
     unsigned chunks;
 
     /* Each vector register (chunk) corresponds to 128 bits == 8 Posf,
@@ -39,17 +38,11 @@ local void slide_hash_power8_loop(
         vp--;
         vm = *vp;
 
-        /* m < s->w_size ? */
-        vc = (vector unsigned short) vec_cmplt(vm,vw);
-
-        /* calculate (m - s->w_size)
-         * Overflowed results will be discarded later  */
-        vs = vec_sub(vm,vw);
-
-        /* Choose 0 or (m - s->w_size) based on comparison */
-        vm = vec_sel(vs,v0,vc);
-
-        *vp = vm;
+        /* This is equivalent to: m >= w_size ? m - w_size : 0
+         * Since we are using a saturated unsigned subtraction, any
+         * values that are > w_size will be set to 0, while the others
+         * will be subtracted by w_size. */
+        *vp = vec_subs(vm,vw);
     } while (--chunks);
 };
 
