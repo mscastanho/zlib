@@ -852,6 +852,9 @@ cat > $test.c <<EOF
 #ifndef _ARCH_PPC
   #error "Target is not Power"
 #endif
+#if !(defined(__PPC64__) || defined(__powerpc64__))
+  #error "Target is not 64 bits"
+#endif
 #ifndef HAVE_IFUNC
   #error "Target doesn't support ifunc"
 #endif
